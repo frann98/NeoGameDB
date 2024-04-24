@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "955918125245",
+    "firebase_url": "https://neogamedb-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "neogamedb",
+    "storage_bucket": "neogamedb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:955918125245:android:983b8fef5dd891b6968fd4",
+        "android_client_info": {
+          "package_name": "es.fconache.neogamedb"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "955918125245-rdn7bc3rpc8d72r8u7v7bd5b13h2a1vq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "es.fconache.neogamedb",
+            "certificate_hash": "75d025d93b0480213c9037e0546b96a842ba5b6a"
+          }
+        },
+        {
+          "client_id": "955918125245-ifkk6gv36jattoe692v8f03v2dflhs14.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBXAIOeZlFBSFUvARba5ndNZ_pOo4K-izA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "955918125245-ifkk6gv36jattoe692v8f03v2dflhs14.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

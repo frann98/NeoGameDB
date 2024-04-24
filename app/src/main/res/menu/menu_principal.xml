@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/mi_about"
+        android:title="@string/acerca_de" />
+    <item
+        android:id="@+id/mi_listaJuegos"
+        android:title="@string/lista_juegos" />
+    <item
+        android:id="@+id/mi_salir"
+        android:title="@string/salir" />
+</menu>

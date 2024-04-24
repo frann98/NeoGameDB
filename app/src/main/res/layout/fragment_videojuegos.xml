@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/videogamesbg"
+    tools:context=".fragments.VideojuegosFragment">
+
+    <SearchView
+        android:id="@+id/svVideojuegos"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/light_gray"
+        android:backgroundTint="@color/light_gray"
+        android:tooltipText="Buscar Videojuegos" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvVideojuegos"
+        android:layout_width="match_parent"
+        android:layout_height="539dp"
+        android:layout_gravity="center" />
+</FrameLayout>
