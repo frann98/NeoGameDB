@@ -13,7 +13,9 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.ktx.Firebase
 import es.fconache.neogamedb.databinding.ActivityFragmentsBinding
+import es.fconache.neogamedb.fragments.ExplorarFragment
 import es.fconache.neogamedb.fragments.MusicaFragment
+import es.fconache.neogamedb.fragments.NoticiasFragment
 import es.fconache.neogamedb.fragments.VideojuegosFragment
 import es.fconache.neogamedb.fragments.VideosFragment
 
@@ -45,11 +47,11 @@ class FragmentsActivity : AppCompatActivity() {
 
         }
 
-        binding.btnMusica.setOnClickListener {
+        binding.btnNoticias.setOnClickListener {
 
             supportFragmentManager.commit {
                 setReorderingAllowed(true)
-                replace(R.id.fragContPrincipal, MusicaFragment())
+                replace(R.id.fragContPrincipal, NoticiasFragment())
             }
 
         }
@@ -64,12 +66,12 @@ class FragmentsActivity : AppCompatActivity() {
 
         }
 
-        binding.btnVideos.setOnClickListener {
+        binding.btnExplorar.setOnClickListener {
 
 
             supportFragmentManager.commit {
                 setReorderingAllowed(true)
-                replace(R.id.fragContPrincipal, VideosFragment())
+                replace(R.id.fragContPrincipal, ExplorarFragment())
             }
 
         }

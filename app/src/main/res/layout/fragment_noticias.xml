@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/linear_layout_botonesD"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:backgroundTint="#00FFFFFF"
+        android:backgroundTintMode="add"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnYoutube"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:backgroundTint="#FF0000"
+            android:text="Nintendo"
+            android:textColor="#FFFFFF" />
+
+        <Button
+            android:id="@+id/btnTwitch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:backgroundTint="#00439B"
+            android:text="Sony"
+            android:textColor="#FFFFFF" />
+
+        <Button
+            android:id="@+id/btnWTP"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:backgroundTint="#157D35"
+            android:text="XBox"
+            android:textColor="#FFFFFF" />
+
+        <Button
+            android:id="@+id/btnPC"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:backgroundTint="#000000"
+            android:text="PC"
+            android:textColor="#FFFFFF" />
+    </LinearLayout>
+
+    <WebView
+        android:id="@+id/webViewExplorar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</LinearLayout>

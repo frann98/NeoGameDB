@@ -50,14 +50,14 @@
         android:padding="2dp">
 
         <Button
-            android:id="@+id/btnMusica"
+            android:id="@+id/btnNoticias"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="2dp"
             android:layout_weight="1"
             android:background="@drawable/rectangular_button"
             android:backgroundTint="@color/design_default_color_secondary_variant"
-            android:text="Musica" />
+            android:text="Noticias" />
 
         <Button
             android:id="@+id/btnVideojuegos"
@@ -69,12 +69,12 @@
             android:text="Videojuegos" />
 
         <Button
-            android:id="@+id/btnVideos"
+            android:id="@+id/btnExplorar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="2dp"
             android:layout_weight="1"
             android:background="@drawable/rectangular_button"
-            android:text="Videos" />
+            android:text="Explorar" />
     </LinearLayout>
 </LinearLayout>

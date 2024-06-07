@@ -141,12 +141,12 @@ class AgregarActivity : AppCompatActivity() {
                 Toast.makeText(this, "Videojuego Guardado", Toast.LENGTH_LONG).show()
                 finish()
             } else {
-                binding.etNombre.error = "ERROR, El nombre1 ya existe"
+                binding.etNombre.error = "ERROR, El nombre ya existe"
                 binding.etNombre.requestFocus()
             }
         } else {
             if (!ac.update(videojuego)) {
-                binding.etNombre.error = "ERROR, El nombre2 ya existe"
+                binding.etNombre.error = "ERROR, El nombre ya existe"
                 binding.etNombre.requestFocus()
             } else {
                 Toast.makeText(this, "Videojuego Editado", Toast.LENGTH_LONG).show()
