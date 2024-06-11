@@ -9,15 +9,19 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import es.fconache.neogamedb.adapters.VideojuegosSerializableAdapter
 import es.fconache.neogamedb.databases.VideojuegosDBAdmin
 import es.fconache.neogamedb.databinding.ActivityListaJuegosBinding
 import es.fconache.neogamedb.models.VideojuegosSerializable
 
 class ListaJuegosActivity : AppCompatActivity() {
-
+    private lateinit var auth: FirebaseAuth
     private lateinit var fdb: FirebaseDatabase;
     private lateinit var dbr: DatabaseReference;
 
@@ -30,12 +34,72 @@ class ListaJuegosActivity : AppCompatActivity() {
         binding = ActivityListaJuegosBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        auth = FirebaseAuth.getInstance()
         fdb = FirebaseDatabase.getInstance()
         dbr = fdb.getReference()
 
         setRecycler()
+        binding.botonFlotante.setOnClickListener() {
+            fetchEntriesFromFirebase()
+        }
 
         title = "BD Videojuegos"
+    }
+
+    private fun fetchEntriesFromFirebase() {
+
+        val user = auth.currentUser
+
+        user?.let {
+            val userEntriesRef = fdb.reference.child("users").child(it.uid).child("entries")
+
+            userEntriesRef.addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+
+                    val ac = VideojuegosDBAdmin()
+                    val listavj = ac.readAll()
+
+                    if (listavj.size!=0){
+                        ac.borrarTodo()
+                    }
+
+                    for (entrySnapshot in snapshot.children) {
+                        val id = entrySnapshot.child("id").getValue().toString()
+                        val titulo = entrySnapshot.child("titulo").getValue().toString()
+                        val estado = entrySnapshot.child("estado").getValue().toString()
+                        val notapersonal = entrySnapshot.child("notapersonal").getValue().toString()
+
+                        val videojuego = VideojuegosSerializable(
+                            id.toInt(), titulo, estado, notapersonal.toInt()
+                        )
+
+                        //if (listavj.contains(videojuego)) {
+                        //    break
+                        //}
+
+                        for (item in listavj){
+                            if (item.nombre==videojuego.nombre){
+                                break
+                            }
+                        }
+
+                        ac.create(videojuego)
+
+                        //lista.add(videojuego)
+                        setRecycler()
+                    }
+
+                    adapter.notifyDataSetChanged()
+
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    Toast.makeText(
+                        this@ListaJuegosActivity, "Error al recuperar juegos", Toast.LENGTH_SHORT
+                    ).show()
+                }
+            })
+        }
     }
 
     //--------------------------------------------------------------------------------------------//
@@ -55,17 +119,26 @@ class ListaJuegosActivity : AppCompatActivity() {
 
     private fun subir(it: VideojuegosSerializable) {
 
-        val datos = listOf(
-            "Titulo: " + (it.nombre),
-            ("Estado: " + it.estado),
-            ("Nota_Personal: " + it.notaPersonal.toString())
-        )
-        val datosM = mutableMapOf<String, Any>()
-        datosM["videojuego"] = datos
-        dbr.setValue(datosM)
-        Toast.makeText(this, "Subido a la Base de datos", Toast.LENGTH_SHORT).show()
+        val user = auth.currentUser
 
+        val id = it.id
+        val titulo = it.nombre
+        val estado = it.estado
+        val notapersonal = it.notaPersonal
+
+        val entry = hashMapOf<String, Any>(
+            "id" to id, "titulo" to titulo, "estado" to estado, "notapersonal" to notapersonal
+        )
+
+        user?.let {
+            val userEntriesRef = fdb.reference.child("users").child(it.uid).child("entries")
+            val newEntryRef = userEntriesRef.push() //Clave unica por operacion
+            newEntryRef.setValue(entry)
+        }
+        Toast.makeText(this, "Subido a la BBDD", Toast.LENGTH_SHORT).show()
     }
+
+
     //--------------------------------------------------------------------------------------------//
 
     private fun actualizar(videojuego: VideojuegosSerializable) {
@@ -130,6 +203,7 @@ class ListaJuegosActivity : AppCompatActivity() {
             R.id.mi_salir -> {
                 finishAffinity()
             }
+
         }
         return super.onOptionsItemSelected(item)
     }

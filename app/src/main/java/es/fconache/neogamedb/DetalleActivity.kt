@@ -12,6 +12,7 @@ class DetalleActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityDetalleBinding
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDetalleBinding.inflate(layoutInflater)
@@ -27,7 +28,12 @@ class DetalleActivity : AppCompatActivity() {
             finish()
         }
         binding.btnAgregarALista.setOnClickListener {
-            startActivity(Intent(this, AgregarActivity::class.java))
+            val datos = intent.extras
+            startActivity(
+                Intent(this, AgregarActivity::class.java).putExtra(
+                    "NOMBREJUEGO", datos?.getString("NOMBRE")
+                )
+            )
         }
     }
 

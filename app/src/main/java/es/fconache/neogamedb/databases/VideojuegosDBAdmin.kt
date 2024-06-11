@@ -37,7 +37,7 @@ class VideojuegosDBAdmin {
             try {
                 val cursor = con.rawQuery(query, null)
                 while (cursor.moveToNext()) {
-                    val dato: VideojuegosSerializable = VideojuegosSerializable(
+                    val dato = VideojuegosSerializable(
                         cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getInt(3)
                     )
                     lista.add(dato)

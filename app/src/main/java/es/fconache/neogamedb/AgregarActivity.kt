@@ -15,6 +15,7 @@ import es.fconache.neogamedb.models.VideojuegosSerializable
 class AgregarActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAgregarBinding
 
+
     private var id = -1
     private var nombre = ""
     private var estado = ""
@@ -35,6 +36,8 @@ class AgregarActivity : AppCompatActivity() {
             title = "NUEVO VIDEOJUEGO"
             binding.btn2Enviar.setText("AGREGAR")
             binding.tvTitulo.text = "AGREGAR VIDEOJUEGO"
+            val nombreJuego = intent.getStringExtra("NOMBREJUEGO")
+            binding.etNombre.setText(nombreJuego)
         }
 
         setListeners()
@@ -44,10 +47,10 @@ class AgregarActivity : AppCompatActivity() {
     //--------------------------------------------------------------------------------------------//
 
     private fun recuperarVideojuego() {
-        val datos = intent.extras
-        if (datos != null) {
+        val vj = intent.getSerializableExtra("VIDEOJUEGO")
+        if (vj != null) {
             update = true
-            val videojuego = datos.getSerializable("VIDEOJUEGO") as VideojuegosSerializable
+            val videojuego = vj as VideojuegosSerializable
             id = videojuego.id
             nombre = videojuego.nombre
             estado = videojuego.estado
@@ -159,7 +162,8 @@ class AgregarActivity : AppCompatActivity() {
     //--------------------------------------------------------------------------------------------//
 
     private fun limpiar() {
-        binding.etNombre.setText("")
+        val datos = intent.extras
+        binding.etNombre.setText(datos?.getString("NOMBREJUEGO"))
         binding.spnEstado.setSelection(0)
         binding.etEstado.setText("")
         binding.sbNotaPersonal.progress = 0
