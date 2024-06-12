@@ -10,7 +10,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/material_dynamic_neutral99"
+        android:background="@color/material_dynamic_secondary60"
         android:orientation="horizontal">
 
         <TextView
@@ -26,8 +26,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@drawable/rectangular_button"
-            android:text="cerrar_sesion" />
+            android:background="#B40000"
+            android:backgroundTint="#B40000"
+            android:drawableTint="#B40000"
+            android:foregroundTint="#B40000"
+            android:text="Cerrar Sesion"
+            android:textColorHighlight="#B40000"
+            android:textColorLink="#B40000"
+            app:icon="@drawable/cese"
+            app:iconGravity="end"
+            app:iconPadding="0dp" />
     </LinearLayout>
 
     <LinearLayout

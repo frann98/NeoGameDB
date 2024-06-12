@@ -33,8 +33,8 @@ class ExplorarFragment : Fragment() {
         webView = view.findViewById(R.id.webViewExplorar)
         webView.webViewClient = WebViewClient() // This prevents opening web pages in the browser
         webView.settings.javaScriptEnabled = true // Enable JavaScript if needed
-        val nj = obtenerJuego().replace("-","+")
-        webView.loadUrl("https://www.youtube.com/results?search_query="+nj)
+        val nj = obtenerJuego().replace("-", "+")
+        webView.loadUrl("https://www.youtube.com/results?search_query=" + nj)
 
         // Inject JavaScript and CSS for dark mode
         //webView.webViewClient = object : WebViewClient() {
@@ -66,20 +66,20 @@ class ExplorarFragment : Fragment() {
         val btnWTP: Button = requireView().findViewById(R.id.btnWTP)
 
         btnYoutube.setOnClickListener {
-            val nj = obtenerJuego().replace("-","+")
-            webView.loadUrl("https://www.youtube.com/results?search_query="+nj)
+            val nj = obtenerJuego().replace("-", "+")
+            webView.loadUrl("https://www.youtube.com/results?search_query=" + nj)
             LLBotonesD.setBackgroundColor(Color.parseColor("#FF0000"))
         }
 
         btnTwitch.setOnClickListener {
             val nj = obtenerJuego()
-            webView.loadUrl("https://www.twitch.tv/directory/category/"+nj)
+            webView.loadUrl("https://www.twitch.tv/directory/category/" + nj)
             LLBotonesD.setBackgroundColor(Color.parseColor("#A870FE"))
         }
 
         btnWTP.setOnClickListener {
-            val nj = obtenerJuego().replace("-","%20")
-            webView.loadUrl("https://whatoplay.com/search/?games%5Bquery%5D="+nj)
+            val nj = obtenerJuego().replace("-", "%20")
+            webView.loadUrl("https://whatoplay.com/search/?games%5Bquery%5D=" + nj)
             LLBotonesD.setBackgroundColor(Color.parseColor("#1DC34A"))
         }
 
@@ -88,8 +88,13 @@ class ExplorarFragment : Fragment() {
     private fun obtenerJuego(): String {
 
         val ac = VideojuegosDBAdmin()
+        var nombreJuego = ""
         lista = ac.readAll()
-        nombreJuego = lista[Random.nextInt(0, lista.size)].nombre
+        if (lista.size == 0) {
+            nombreJuego = "Minecraft"
+        } else {
+            nombreJuego = lista[Random.nextInt(0, lista.size)].nombre
+        }
 
         return nombreJuego.lowercase().replace(" ", "-")
     }
