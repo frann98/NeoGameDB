@@ -6,4 +6,4 @@ NeoGameDB es una app Android enfocada al mundo de los videojuegos y diseñada pa
 ## 🔧Guia de montaje como proyecto🔧
 ### 0️⃣ Accedemos al botón verde de Code en el repositorio de GitHub y seleccionamos "Download ZIP"
 ### 1️⃣ Descomprimimos el ZIP en nuestro lugar de preferencia
-### 2️⃣ Abrimos la carpeta obtenida con Android Studio
+### 2️⃣ Abrimos con Android Studio la carpeta obtenida
