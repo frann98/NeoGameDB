@@ -12,8 +12,10 @@ import android.widget.Button
 import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
 import es.fconache.neogamedb.R
+import es.fconache.neogamedb.interfaces.OnBackPressedListener
 
-class NoticiasFragment : Fragment() {
+// Fragmento para mostrar noticias de diferentes plataformas de videojuegos
+class NoticiasFragment : Fragment(), OnBackPressedListener {
 
     private lateinit var webView: WebView
     private lateinit var LLBotones: LinearLayout
@@ -21,39 +23,50 @@ class NoticiasFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
+        // Inflar el layout para este fragmento
         val view = inflater.inflate(R.layout.fragment_noticias, container, false)
 
-        // Initialize WebView
+        // Inicializar WebView
         webView = view.findViewById(R.id.webViewExplorar)
-        webView.webViewClient = WebViewClient() // This prevents opening web pages in the browser
-        webView.settings.javaScriptEnabled = true // Enable JavaScript if needed
-        webView.loadUrl("https://www.nintenderos.com/category/noticias/") // Replace with your URL
+        webView.webViewClient =
+            WebViewClient() // Esto evita que se abran páginas web en el navegador externo
+        webView.settings.javaScriptEnabled = true // Habilitar JavaScript si es necesario
+        webView.loadUrl("https://www.nintenderos.com/category/noticias/") // URL inicial de carga
 
-        // Inject JavaScript and CSS for dark mode
+        // Inyectar JavaScript y CSS para el modo oscuro (comentado por ahora)
         //webView.webViewClient = object : WebViewClient() {
-            //override fun onPageFinished(view: WebView?, url: String?) {
-                //super.onPageFinished(view, url)
-                //enableDarkMode(webView)
-            //}
+        //    override fun onPageFinished(view: WebView?, url: String?) {
+        //        super.onPageFinished(view, url)
+        //        enableDarkMode(webView)
+        //    }
         //}
 
-        // Initialize Button Container
+        // Inicializar contenedor de botones
         LLBotones = view.findViewById(R.id.linear_layout_botonesD)
 
-        // Set initial background color of the LinearLayout
+        // Establecer color de fondo inicial del LinearLayout
         LLBotones.setBackgroundColor(Color.parseColor("#FF0000"))
 
         return view
     }
 
+    override fun onBackPressed(): Boolean {
+        return if (webView.canGoBack()) {
+            webView.goBack()
+            true
+        } else {
+            false
+        }
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Configurar listeners de los botones
         setListeners()
-
     }
 
+    // Función para activar el modo oscuro en el WebView mediante JavaScript
     private fun enableDarkMode(webView: WebView) {
         val js = """
             (function() {
@@ -68,6 +81,7 @@ class NoticiasFragment : Fragment() {
             })();
         """.trimIndent()
 
+        // Evaluar el JavaScript en el WebView, compatible con versiones KitKat y superiores
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             webView.evaluateJavascript(js, null)
         } else {
@@ -75,12 +89,14 @@ class NoticiasFragment : Fragment() {
         }
     }
 
+    // Función para configurar los listeners de los botones
     private fun setListeners() {
-        val btnNintendo: Button = requireView().findViewById(R.id.btnYoutube)
-        val btnSony: Button = requireView().findViewById(R.id.btnTwitch)
-        val btnXbox: Button = requireView().findViewById(R.id.btnWTP)
+        val btnNintendo: Button = requireView().findViewById(R.id.btnNintendo)
+        val btnSony: Button = requireView().findViewById(R.id.btnSony)
+        val btnXbox: Button = requireView().findViewById(R.id.btnXbox)
         val btnPC: Button = requireView().findViewById(R.id.btnPC)
 
+        // Configurar acciones para cada botón
         btnNintendo.setOnClickListener {
             webView.loadUrl("https://www.nintenderos.com/category/noticias/")
             LLBotones.setBackgroundColor(Color.parseColor("#FF0000"))

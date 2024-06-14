@@ -14,7 +14,7 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/btnYoutube"
+            android:id="@+id/btnNintendo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -23,7 +23,7 @@
             android:textColor="#FFFFFF" />
 
         <Button
-            android:id="@+id/btnTwitch"
+            android:id="@+id/btnSony"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -32,7 +32,7 @@
             android:textColor="#FFFFFF" />
 
         <Button
-            android:id="@+id/btnWTP"
+            android:id="@+id/btnXbox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"

@@ -16,8 +16,6 @@ import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.ktx.Firebase
 import es.fconache.neogamedb.databinding.ActivityMainBinding
 import es.fconache.neogamedb.shared.Preferences
@@ -26,47 +24,47 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var pref: Preferences
 
+    // Launcher para obtener el resultado de la actividad de Google SignIn
     private var responseLauncher =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            Log.d("Register_0", it.resultCode.toString())
-            Log.d("Register_01", it.data.toString())
-            if (it.resultCode == RESULT_OK) {
-
-                val task = GoogleSignIn.getSignedInAccountFromIntent(it.data)
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == RESULT_OK) {
+                val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
                 try {
-
-                    val cuenta = task.getResult(ApiException::class.java)
-                    if (cuenta != null) {
-                        val credenciales = GoogleAuthProvider.getCredential(cuenta.idToken, null)
-                        FirebaseAuth.getInstance().signInWithCredential(credenciales)
-                            .addOnCompleteListener {
-                                if (it.isSuccessful) {
+                    // Obtiene la cuenta de Google
+                    val account = task.getResult(ApiException::class.java)
+                    if (account != null) {
+                        // Obtiene las credenciales de autenticación de Google y las utiliza para iniciar sesión en Firebase
+                        val credentials = GoogleAuthProvider.getCredential(account.idToken, null)
+                        FirebaseAuth.getInstance().signInWithCredential(credentials)
+                            .addOnCompleteListener { authResult ->
+                                if (authResult.isSuccessful) {
                                     irActivityPrincipal()
                                 } else {
-                                    println("ADVERTENCIA AHORA:")
-                                    Log.d("Register_1", it.exception.toString())
-                                    println(it.exception.toString())
+                                    Log.e(
+                                        "GoogleSignIn",
+                                        "Google sign in failed: ${authResult.exception}"
+                                    )
+                                    Toast.makeText(
+                                        this,
+                                        "Error al iniciar sesión con Google",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
                                 }
                             }
                     }
-
                 } catch (e: ApiException) {
-                    println("ADVERTENCIA AHORA:")
-                    Log.d("Register_3", e.message.toString())
-                    println(e.message.toString())
-
+                    Log.e("GoogleSignIn", "Google sign in failed: ${e.message}")
+                    Toast.makeText(
+                        this, "Error al iniciar sesión con Google: ${e.message}", Toast.LENGTH_SHORT
+                    ).show()
                 }
-
             } else {
                 Toast.makeText(this, "El usuario canceló", Toast.LENGTH_SHORT).show()
             }
         }
 
-
-    lateinit var binding: ActivityMainBinding
-
+    private lateinit var binding: ActivityMainBinding
     private lateinit var auth: FirebaseAuth
-
     private var email = ""
     private var password = ""
 
@@ -75,11 +73,11 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         title = "NeoGameDB"
-        println("App iniciada")
 
         auth = Firebase.auth
-
         pref = Preferences(this)
+
+        // Configura el modo oscuro según la preferencia almacenada
         if (pref.leerModo()) {
             activarModoOscuro()
             binding.swModoOscuro.isChecked = true
@@ -89,38 +87,33 @@ class MainActivity : AppCompatActivity() {
         }
 
         setListeners()
-
     }
 
     override fun onStart() {
         super.onStart()
-        val usuario = auth.currentUser
-
-        if (usuario != null) {
+        // Verifica si el usuario ya está autenticado al iniciar la actividad
+        val currentUser = auth.currentUser
+        if (currentUser != null) {
             irActivityPrincipal()
         }
     }
 
     private fun setListeners() {
+        // Listener para el botón de registro
         binding.btnRegister.setOnClickListener {
-
             if (comprobarCampos()) {
-
                 registroBasico()
-
             }
-
-
         }
 
+        // Listener para el botón de inicio de sesión
         binding.btnLogin.setOnClickListener {
-
             if (comprobarCampos()) {
                 loginBasico()
             }
-
         }
 
+        // Listener para el switch de modo oscuro
         binding.swModoOscuro.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 pref.ponerModo(true)
@@ -131,48 +124,41 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        // Listener para el botón de inicio de sesión con Google
         binding.btnGoogle.setOnClickListener {
-
-            println("BOTON PULSADO")
             loginGoogle()
-
         }
-
     }
 
+    // Método para iniciar sesión con correo electrónico y contraseña
     private fun loginBasico() {
-        auth.signInWithEmailAndPassword(email, password).addOnCompleteListener {
-
-            if (it.isSuccessful) {
-
-                irActivityPrincipal()
-
-            } else {
-
-                Toast.makeText(this, "Email o Contraseña incorrectos", Toast.LENGTH_SHORT).show()
-
-
+        auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    irActivityPrincipal()
+                } else {
+                    Toast.makeText(this, "Email o Contraseña incorrectos", Toast.LENGTH_SHORT)
+                        .show()
+                }
             }
-
-        }
     }
 
+    // Método para registrar un nuevo usuario con correo electrónico y contraseña
     private fun registroBasico() {
-        auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener {
-            if (it.isSuccessful) {
-                loginBasico()
-            } else {
-                Log.d("REGISTRO", it.exception.toString())
+        auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    loginBasico()
+                } else {
+                    Toast.makeText(
+                        this,
+                        "Error al registrar usuario: ${task.exception?.message}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
             }
-        }.addOnFailureListener {
-
-            Log.d("registro", it.message.toString())
-
-        }
     }
 
+    // Método para validar los campos de email y contraseña
     private fun comprobarCampos(): Boolean {
-
         email = binding.etEmail.text.toString().trim()
         if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             binding.etEmail.error = "Introduce un Email válido"
@@ -185,9 +171,9 @@ class MainActivity : AppCompatActivity() {
             return false
         }
         return true
-
     }
 
+    // Método para iniciar sesión con Google
     private fun loginGoogle() {
 
         val googleConf = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -202,10 +188,13 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    // Método para navegar a la actividad principal
     private fun irActivityPrincipal() {
         startActivity(Intent(this, FragmentsActivity::class.java))
+        finish()
     }
 
+    // Métodos para crear el menú de opciones en la barra de acción
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_principal, menu)
         return super.onCreateOptionsMenu(menu)
@@ -225,23 +214,15 @@ class MainActivity : AppCompatActivity() {
                 finishAffinity()
             }
         }
-
         return super.onOptionsItemSelected(item)
     }
 
-    //--------------------------------------------------------------------------------------------//
-
-    private fun desactivarModoOscuro() {
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-    }
-
-    //--------------------------------------------------------------------------------------------//
-
+    // Métodos para activar y desactivar el modo oscuro
     private fun activarModoOscuro() {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
     }
 
-    //--------------------------------------------------------------------------------------------//
-
-
+    private fun desactivarModoOscuro() {
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+    }
 }
