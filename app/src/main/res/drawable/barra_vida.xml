@@ -1,0 +1,28 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@android:id/background">
+        <shape>
+            <corners android:radius="4dp" />
+            <solid android:color="@android:color/holo_red_dark" /> <!-- Background color -->
+        </shape>
+    </item>
+
+    <item android:id="@android:id/secondaryProgress">
+        <clip>
+            <shape>
+                <corners android:radius="4dp" />
+                <solid android:color="#FF0000" /> <!-- Red color for secondary progress -->
+            </shape>
+        </clip>
+    </item>
+
+    <item android:id="@android:id/progress">
+        <clip>
+            <shape>
+                <corners android:radius="4dp" />
+                <solid android:color="#00FF00" /> <!-- Green color for progress -->
+            </shape>
+        </clip>
+    </item>
+
+</layer-list>
