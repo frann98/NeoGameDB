@@ -9,9 +9,9 @@
     <string name="volver">Volver</string>
     <string name="modo_oscuro">Modo Oscuro</string>
     <string name="acceder">Acceder</string>
-    <string name="registrar">Registrar</string>
-    <string name="password">Password...</string>
-    <string name="email">Email...</string>
+    <string name="registrar">Registrarse</string>
+    <string name="password">Contraseña</string>
+    <string name="email">email@email.com</string>
     <string name="actualizar">ACTUALIZAR</string>
     <string name="borrar">BORRAR</string>
 </resources>
